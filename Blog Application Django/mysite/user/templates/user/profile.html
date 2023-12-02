@@ -1,0 +1,87 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  
+  <div class="container py-3 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body p-4">
+            <div class="d-flex text-black">
+              <div class="flex-shrink-0">
+                <img src="{{ current_user.profile.image.url}}"
+                  alt="Generic placeholder image" class="img-fluid"
+                  style="width: 180px; border-radius: 10px;">
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1 display-6">{{current_user.username}}</h5>
+                <br>
+                <p class="mb-2 pb-1" style="color: #2b2a2a;">{{current_user.email}}</p>
+                <p class="mb-0 font-monospace">{{ number_of_articles }} Articles</p>
+                
+                <small class="text-muted">Mao member since {{ current_user.date_joined|date:"F y" }}</small>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  {% if request.user == current_user %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Profile Info</legend>
+            {{ u_form|crispy }}
+            <br>
+            {{ p_form|crispy }}
+        </fieldset>
+        <br>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update</button>
+        </div>
+    </form>
+  {% endif %}
+  <hr class='bold-hr'>
+
+  <h1 class="display-3 ">Articles</h1> 
+  {% if posts%}
+  <hr class='bold-hr'>
+  {% for post in posts %}
+    <div class="col-md-6 ">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <img class="rounded-circle" src="{{ post.author.profile.image.url }}" width="40" height="40" >
+          <strong class="d-inline-block mb-2 text-success">{{ post.author}}</strong>
+          <h3 class="mb-0">{{ post.title}}</h3>
+          <div class="mb-1 text-muted">{{ post.publish|date:"d F Y"}}</div>
+          <p class="mb-auto">{{ post.body|truncatewords:12}}</p>
+          <a href="{{ post.get_absolute_url}}" class="stretched-link">Continue reading</a>
+        </div>
+        <div class="col-auto d-none d-lg-block img-fluid rounded-start mt-4 mb-4" >
+          {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Thumbnail" height="200" width="250">
+          {% endif%}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  {% else%}
+  <h3>No article Posted</h3>
+  {% endif %}
+
+{% endblock content %}
+
+
+
+
+<div class="content-section">
+  <div class="media">
+    <img class="rounded-circle account-img" src="{{ current_user.profile.image.url }}">
+    <div class="media-body">
+      <h2 class="account-heading">{{ current_user.username }}</h2>
+      <p class="text-secondary">{{ current_user.email }}</p>
+    </div>
+  </div>
+  <br><br>
