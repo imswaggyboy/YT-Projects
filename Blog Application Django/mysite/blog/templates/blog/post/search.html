@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+{% block title %}Search{% endblock %}
+{% block content %}
+ {% if query %}
+    <h1>Posts containing "{{ query }}"</h1>
+    <hr>
+    <h3>
+        {% with results.count as total_results %}
+            Found {{ total_results }} result{{ total_results|pluralize }}
+        {% endwith %}
+    </h3>
+    {% for post in results %}
+    <div class="col-md-10 ">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <img class="rounded-circle" src="{{ post.author.profile.image.url }}" width="40" height="40" >
+            <strong class="d-inline-block mb-2 text-success">{{ post.author}}</strong>
+            <h3 class="mb-0">{{ post.title}}</h3>
+            <div class="mb-1 text-muted">{{ post.publish|date:"d F Y"}}</div>
+            <p class="mb-auto">{{ post.body|truncatewords:12}}</p>
+            <a href="{{ post.get_absolute_url}}" class="stretched-link">Continue reading</a>
+          </div>
+          <div class="col-auto d-none d-lg-block img-fluid rounded-start mt-4 mb-4" >
+            {% if post.image %}
+              <img src="{{ post.image.url }}" alt="Thumbnail" height="200" width="250">
+            {% endif%}
+          </div>
+        </div>
+      </div>
+        
+      
+        {% empty %}
+        <br>
+        <p>There are no results for your query.</p>
+    {% endfor %}
+        <p><a class="btn btn-outline-dark" href="{% url "blog:post_search" %}">Search again</a></p>
+    {% else %}
+        <h1>Search for posts</h1>
+        <br>
+        <form method="get">
+            {{ form.as_p}}
+            <input class="btn btn-outline-info" type="submit" value="Search">
+        </form>
+ {% endif %}
+{% endblock %}

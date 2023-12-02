@@ -1,0 +1,65 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+  <section id="hero">
+    <!-- ======= Hero Section ======= -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100"  height="600" src="https://images.unsplash.com/photo-1504805572947-34fad45aed93?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="First slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" height="600" src="https://images.unsplash.com/photo-1552508744-1696d4464960?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Second slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100"  height="600"src="https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?q=80&w=1772&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Third slide">
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon bg-body-secondary" aria-hidden="true"></span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon bg-dark-subtle" aria-hidden="true"></span>
+
+      </a>
+    </div>
+  </section>
+<br>
+<h2 class="display-1" >Top Posts</h2>
+<hr class="bold-hr">
+<div class="align-self-center ">
+  {% for post in posts %}
+  <div class="col-md-10 ">
+    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+      <div class="col p-4 d-flex flex-column position-static">
+        <img class="rounded-circle" src="{{ post.author.profile.image.url }}" width="40" height="40" >
+        <strong class="d-inline-block mb-2 text-success">{{ post.author}}</strong>
+        <h3 class="mb-0">{{ post.title}}</h3>
+        <div class="mb-1 text-muted">{{ post.publish|date:"d F Y"}}</div>
+        <p class="mb-auto">{{ post.body|truncatewords:12}}</p>
+        <a href="{{ post.get_absolute_url}}" class="stretched-link">Continue reading</a>
+      </div>
+      <div class="col-auto d-none d-lg-block img-fluid rounded-start mt-4 mb-4" >
+        {% if post.image %}
+          <img src="{{ post.image.url }}" alt="Thumbnail" height="200" width="250">
+        {% endif%}
+      </div>
+    </div>
+  </div>
+    
+  
+  {% endfor %}
+  {% include 'pagination.html' with page=page_obj %}
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+

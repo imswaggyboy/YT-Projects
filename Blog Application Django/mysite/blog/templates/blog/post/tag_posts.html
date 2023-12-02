@@ -1,0 +1,30 @@
+{% extends "blog/base.html" %}
+
+{% block content%}
+
+<div class="align-self-center ">
+    <h3>Post tagged with "{{tag}}"</h3>
+    <br>
+    {% for post in posts %}
+    <div class="col-md-10 ">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <img class="rounded-circle" src="{{ post.author.profile.image.url }}" width="40" height="40" >
+          <strong class="d-inline-block mb-2 text-success">{{ post.author}}</strong>
+          <h3 class="mb-0">{{ post.title}}</h3>
+          <div class="mb-1 text-muted">{{ post.publish|date:"d F Y"}}</div>
+          <p class="mb-auto">{{ post.body|truncatewords:12}}</p>
+          <a href="{{ post.get_absolute_url}}" class="stretched-link">Continue reading</a>
+        </div>
+        <div class="col-auto d-none d-lg-block img-fluid rounded-start mt-4 mb-4" >
+          {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Thumbnail" height="200" width="250">
+          {% endif%}
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+    {% include 'pagination.html' with page=posts %}
+</div>
+{% endblock%}
